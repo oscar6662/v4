@@ -1,1 +1,5 @@
-// TODO útfæra proxy virkni
+function router(){
+  return null;
+}
+
+export{router};
