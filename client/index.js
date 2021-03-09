@@ -3,15 +3,10 @@ import { el, element, formatDate } from './lib/utils';
 import { init, createPopup } from './lib/map';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // TODO
-  // Bæta við virkni til að sækja úr lista
-  // Nota proxy
-  // Hreinsa header og upplýsingar þegar ný gögn eru sótt
-  // Sterkur leikur að refactora úr virkni fyrir event handler í sér fall
-
-  const earthquakes = await fetchEarthquakes();
-
-  // Fjarlægjum loading skilaboð eftir að við höfum sótt gögn
+  
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const earthquakes = await fetchEarthquakes( urlParams.get('type'), urlParams.get('period'));
   const loading = document.querySelector('.loading');
   const parent = loading.parentNode;
   parent.removeChild(loading);
@@ -21,13 +16,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       el('p', 'Villa við að sækja gögn'),
     );
   }
-
+  let cache = '';
+  if(!earthquakes.info.cached) cache = 'ekki '
+  document.querySelector('.cache').append('Gögn eru '+cache+'í cache. Fyrirspurn tók '+earthquakes.info.elapsed+' sek.');
   const ul = document.querySelector('.earthquakes');
   const map = document.querySelector('.map');
 
   init(map);
 
-  earthquakes.forEach((quake) => {
+  earthquakes.data.forEach((quake) => {
     const {
       title, mag, time, url,
     } = quake.properties;

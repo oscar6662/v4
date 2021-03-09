@@ -1,10 +1,8 @@
 import redis from 'redis';
 import util from 'util';
 
-// Ættum að lesa úr .env
 const REDIS_URL = 'redis://127.0.0.1:6379/0';
 
-// Ef við myndum vilja slökkva á caching, sleppum að skilgreina REDIS_URL
 let client;
 
 if (REDIS_URL) {
@@ -19,7 +17,7 @@ const asyncSet = util.promisify(client.set).bind(client);
  * @param {string} cacheKey Cache key to for data for
  * @returns {object} Data as the cached object, otherwise null
  */
-async function get(cacheKey) {
+export async function get(cacheKey) {
   // Slökkt á cache
   if (!client || !asyncGet) {
     return null;
@@ -58,7 +56,7 @@ async function get(cacheKey) {
  * @param {number} ttl Time-to-live of cache
  * @returns {Promise<boolean>} true if data cached, otherwise false
  */
-async function set(cacheKey, data, ttl) {
+export async function set(cacheKey, data, ttl) {
   if (!client || !asyncSet) {
     return false;
   }
@@ -74,18 +72,3 @@ async function set(cacheKey, data, ttl) {
   return true;
 }
 
-async function main() {
-  const data = { str: 'hello world', list: [1, 2, 3, 4] };
-
-  const cachedData = await get('data-cache');
-
-  console.log('cached data', cachedData);
-
-  const cached = await set('data-cache', data, 10);
-
-  console.log('was cached?', cached);
-
-  client.quit();
-}
-
-main().catch((err) => { console.error(err); });

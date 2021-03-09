@@ -4,7 +4,9 @@ import { fileURLToPath } from 'url';
 import express from 'express';
 import dotenv from 'dotenv';
 
-import { router as proxyRouter } from './proxy.js';
+import {fetchEarthquakes} from './proxy.js';
+import {get} from './cache.js';
+import {timerStart, timerEnd} from './time.js';
 
 dotenv.config();
 
@@ -19,8 +21,23 @@ app.use(express.static(join(path, '../public')));
 app.use('/public/dist',express.static(join(path, '../public/dist')));
 
 app.get('/', async (req, res) => {
-  console.log(req.query.type);
-  res.sendFile('/client/index.html', { root: '..' });
+    res.sendFile('/client/index.html', { root: '..' });
+
+    
+});
+app.get('/data', async (req, res) => {
+  if(await get(req.query.type+req.query.period) != null){
+    const start = timerStart();
+    let data = await get(req.query.type+req.query.period);
+    data = {data, info:{cached:true,elapsed:timerEnd(start)}};
+    console.log(data);
+    return res.json(data);
+  }
+  const start = timerStart();
+  let data = await fetchEarthquakes(req.query.type,req.query.period);
+  data = {data, info:{cached:false,elapsed:timerEnd(start)}};
+  console.log(data);
+  return res.json(data);
 });
 
 

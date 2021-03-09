@@ -1,8 +1,10 @@
 export async function fetchEarthquakes(type, period) {
-  // TODO sækja gögn frá proxy þjónustu
+  const URL = 'http://localhost:3001/data?type='+type+'&period='+period;
+  let result;
   try {
-    result = await fetch(?);
-  } catch (e) {
+    result = await fetch(URL);
+
+    } catch (e) {
     console.error('Villa við að sækja', e);
     return null;
   }
@@ -11,8 +13,7 @@ export async function fetchEarthquakes(type, period) {
     console.error('Ekki 200 svar', await result.text());
     return null;
   }
-
   const data = await result.json();
-
+  console.log(data.data);
   return data;
 }
