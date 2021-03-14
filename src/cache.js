@@ -1,6 +1,6 @@
 import redis from 'redis';
 import util from 'util';
-import dotenv from 'dotenv',
+import dotenv from 'dotenv';
 
 dotenv.config();
 
