@@ -1,4 +1,3 @@
-/* eslint no-use-before-define: 0 */
 (function () {
   'use strict';
 
@@ -806,7 +805,7 @@
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              URL = 'http://localhost:3001/data?type=' + type + '&period=' + period;
+              URL = "/data?type=".concat(type, "&period=").concat(period);
               _context.prev = 1;
               _context.next = 4;
               return fetch(URL);
@@ -845,10 +844,9 @@
 
             case 20:
               data = _context.sent;
-              console.log(data.data);
               return _context.abrupt("return", data);
 
-            case 23:
+            case 22:
             case "end":
               return _context.stop();
           }
@@ -17427,7 +17425,7 @@
 
             cache = '';
             if (!earthquakes.info.cached) cache = 'ekki ';
-            document.querySelector('.cache').append('Gögn eru ' + cache + 'í cache. Fyrirspurn tók ' + earthquakes.info.elapsed + ' sek.');
+            document.querySelector('.cache').append("G\xF6gn eru ".concat(cache, " \xED cache. Fyrirspurn t\xF3k ").concat(earthquakes.info.elapsed, " sek."));
             ul = document.querySelector('.earthquakes');
             map = document.querySelector('.map');
             init(map);
