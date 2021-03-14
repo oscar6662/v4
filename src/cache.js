@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const {
-  REDIS_URL: redis = 'redis://127.0.0.1:6379/0',
+  REDIS_URL: REDIS_URL = 'redis://127.0.0.1:6379/0',
 } = process.env;
 
 let client;
