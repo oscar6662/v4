@@ -21,7 +21,7 @@ app.use(express.static(join(path, '../public')));
 app.use('/public/dist', express.static(join(path, '../public/dist')));
 
 app.get('/', async (req, res) => {
-  res.sendFile('v4/client/index.html', { root: '..' });
+  res.sendFile(join(path, '../client/index.html'));
 });
 
 app.get('/data', async (req, res) => {
