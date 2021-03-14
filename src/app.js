@@ -21,7 +21,7 @@ app.use(express.static(join(path, '../public')));
 app.use('/public/dist', express.static(join(path, '../public/dist')));
 
 app.get('/', async (req, res) => {
-  res.sendFile('/client/index.html', { root: '..' });
+  res.sendFile('vef2-2021-v4/client/index.html', { root: '..' });
 });
 
 app.get('/data', async (req, res) => {
