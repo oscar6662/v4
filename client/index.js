@@ -3,10 +3,9 @@ import { el, element, formatDate } from './lib/utils';
 import { init, createPopup } from './lib/map';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const earthquakes = await fetchEarthquakes( urlParams.get('type'), urlParams.get('period'));
+  const earthquakes = await fetchEarthquakes(urlParams.get('type'), urlParams.get('period'));
   const loading = document.querySelector('.loading');
   const parent = loading.parentNode;
   parent.removeChild(loading);
@@ -17,8 +16,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     );
   }
   let cache = '';
-  if(!earthquakes.info.cached) cache = 'ekki '
-  document.querySelector('.cache').append('Gögn eru '+cache+'í cache. Fyrirspurn tók '+earthquakes.info.elapsed+' sek.');
+  if (!earthquakes.info.cached) cache = 'ekki ';
+  document.querySelector('.cache').append(`Gögn eru ${cache} í cache. Fyrirspurn tók ${earthquakes.info.elapsed} sek.`);
   const ul = document.querySelector('.earthquakes');
   const map = document.querySelector('.map');
 

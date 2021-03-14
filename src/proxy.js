@@ -1,12 +1,12 @@
 import fetch from 'node-fetch';
-import {set} from './cache.js';
+import { set } from './cache.js';
 
 export async function fetchEarthquakes(type, period) {
-  const URL = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/'+type+'_'+period+'.geojson';
+  const URL = `https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/${type}_${period}.geojson`;
   let result;
   try {
     result = await fetch(URL);
-    } catch (e) {
+  } catch (e) {
     console.error('Villa við að sækja', e);
     return null;
   }
@@ -16,6 +16,6 @@ export async function fetchEarthquakes(type, period) {
     return null;
   }
   const data = await result.json();
-  await set(type+period, data.features, 10);
+  await set(type + period, data.features, 10);
   return data.features;
 }

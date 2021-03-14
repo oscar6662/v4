@@ -4,9 +4,9 @@ import { fileURLToPath } from 'url';
 import express from 'express';
 import dotenv from 'dotenv';
 
-import {fetchEarthquakes} from './proxy.js';
-import {get} from './cache.js';
-import {timerStart, timerEnd} from './time.js';
+import { fetchEarthquakes } from './proxy.js';
+import { get } from './cache.js';
+import { timerStart, timerEnd } from './time.js';
 
 dotenv.config();
 
@@ -16,30 +16,26 @@ const {
 
 const app = express();
 const path = dirname(fileURLToPath(import.meta.url));
-app.use('/css',express.static(join(path, '../client/css')));
+app.use('/css', express.static(join(path, '../client/css')));
 app.use(express.static(join(path, '../public')));
-app.use('/public/dist',express.static(join(path, '../public/dist')));
+app.use('/public/dist', express.static(join(path, '../public/dist')));
 
 app.get('/', async (req, res) => {
-    res.sendFile('/client/index.html', { root: '..' });
-
-    
+  res.sendFile('/client/index.html', { root: '..' });
 });
+
 app.get('/data', async (req, res) => {
-  if(await get(req.query.type+req.query.period) != null){
+  if (await get(req.query.type + req.query.period) != null) {
     const start = timerStart();
-    let data = await get(req.query.type+req.query.period);
-    data = {data, info:{cached:true,elapsed:timerEnd(start)}};
-    console.log(data);
+    let data = await get(req.query.type + req.query.period);
+    data = { data, info: { cached: true, elapsed: timerEnd(start) } };
     return res.json(data);
   }
   const start = timerStart();
-  let data = await fetchEarthquakes(req.query.type,req.query.period);
-  data = {data, info:{cached:false,elapsed:timerEnd(start)}};
-  console.log(data);
+  let data = await fetchEarthquakes(req.query.type, req.query.period);
+  data = { data, info: { cached: false, elapsed: timerEnd(start) } };
   return res.json(data);
 });
-
 
 /**
  * Middleware sem sér um 404 villur.
