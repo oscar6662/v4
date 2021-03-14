@@ -1,5 +1,5 @@
 export async function fetchEarthquakes(type, period) {
-  const URL = `http://localhost:3001/data?type=${type}&period=${period}`;
+  const URL = `/data?type=${type}&period=${period}`;
   let result;
   try {
     result = await fetch(URL);
